@@ -162,3 +162,84 @@ WHERE good_name = 'red caviar' OR good_name = 'black caviar';
 **********34**********
 SELECT COUNT(*) as count FROM Class
 WHERE name LIKE ('10%')
+
+**********35**********
+SELECT COUNT(name) as count FROM Subject
+JOIN Schedule ON Subject.id = Schedule.subject
+WHERE Schedule.date = '2019-09-02T00:00:00.000Z'
+
+**********36**********
+SELECT * FROM Student
+WHERE address LIKE('ul. Pushkina%');
+
+**********37**********
+SELECT MIN(TIMESTAMPDIFF(year, birthday, CURRENT_TIMESTAMP())) as year
+FROM Student;
+
+**********38**********
+SELECT COUNT(first_name) as count
+FROM Student
+WHERE first_name = 'Anna';
+
+**********39**********
+SELECT COUNT(student) as count FROM Class
+JOIN Student_in_class ON Class.id = Student_in_class.class
+WHERE name = '10 B';
+
+**********40**********
+SELECT Subject.name as subjects FROM Subject
+JOIN Schedule ON Subject.id = Schedule.subject
+JOIN Teacher ON Schedule.teacher = Teacher.id
+WHERE Teacher.last_name = 'Romashkin';
+
+**********41**********
+SELECT start_pair FROM Timepair
+WHERE id = 4;
+
+**********42**********
+SELECT TIMEDIFF(MAX(end_pair), MIN(start_pair)) as time FROM Timepair
+WHERE id BETWEEN 2 AND 4;
+
+**********43**********
+SELECT last_name FROM Teacher
+JOIN Schedule ON TEacher.id = Schedule.teacher
+JOIN Subject ON Schedule.subject = Subject.id
+WHERE Subject.name = 'Physical Culture'
+ORDER BY last_name;
+
+**********44**********
+SELECT MAX(TIMESTAMPDIFF(year, birthday, CURRENT_TIMESTAMP())) as max_year
+FROM Student
+JOIN Student_in_class ON Student.id = Student_in_class.student
+JOIN Class ON Student_in_class.class= Class.id
+WHERE Class.name LIKE('10%');
+
+**********46**********
+SELECT name FROM Class
+JOIN Schedule ON Class.id = Schedule.class
+JOIN Teacher ON Schedule.teacher = Teacher.id
+WHERE Teacher.last_name = 'Krauze'
+GROUP BY name;
+
+**********47**********
+SELECT COUNT(*) as count FROM Schedule
+JOIN Teacher ON Schedule.teacher = Teacher.id
+WHERE Schedule.date = '2019-08-30T00:00:00.000Z'
+AND Teacher.last_name = 'Krauze';
+
+**********48**********
+SELECT name, COUNT(student) as count FROM Class
+JOIN Student_in_class ON Class.id = Student_in_class.class
+GROUP BY name
+ORDER BY count DESC;
+
+**********49**********
+SELECT (COUNT(student) / (SELECT COUNT(*) FROM Student_in_class) * 100) as percent
+FROM Class
+JOIN Student_in_class ON Class.id = Student_in_class.class
+WHERE Class.name = '10 A';
+
+**********50**********
+SELECT FLOOR((COUNT(birthday) / (SELECT COUNT(*) FROM Student) * 100)) as percent
+FROM Student
+WHERE YEAR(birthday) = 2000;
